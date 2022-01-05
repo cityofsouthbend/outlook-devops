@@ -151,6 +151,10 @@ Office.onReady((info) => {
     
     getMaintenanceItems();
     var item = Office.context.mailbox.item;
+
+        
+    var attachments = Office.context.mailbox.item.attachments;
+    console.log(attachments);
     
     // Write message property value to the task pane
     document.getElementById("item-subject").placeholder = item.subject;
