@@ -90,7 +90,8 @@ select, #item-subject {
     background-color: #f1f1f1;
 }
 
-#run {
+#run span {
+    display: inline-block;
     width: 50%;
     text-align: center;
     padding: 8px;
