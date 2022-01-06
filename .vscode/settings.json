@@ -3,6 +3,8 @@
       "javascript",
       "javascriptreact",
       "typescript"
-    ]
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/1e53e397-32bd-4d3a-80d2-c3823b6a084d/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/Outlook-Azure",
+    "appService.deploySubpath": "."
   }
   

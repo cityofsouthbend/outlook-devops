@@ -20,8 +20,23 @@ const ticketURL = ($) =>
 const updateAttachmentURL = ($) => `https://dev.azure.com/southbendin/_apis/wit/workitems/${$.val}?api-version=6.0`;
 const createAttachmentURL = `https://dev.azure.com/southbendin/Applications%20-%20Project%20Portfolio/_apis/wit/attachments?fileName=EmailAsFileAttachment.txt&api-version=6.0`;
 
-const paToken = "Basic " + btoa("Basic" + ":" + "iinmtwdby2a5k3v6dekdc5y53raw7vsavivuss4fm47l4bu6fwzq");
 
+async function createToken() {
+  const tokenHeaders = {method: 'POST', body: JSON.stringify(
+    {
+      "displayName": "new_token",
+      "scope": "app_token",
+      "validTo": "2022-12-01T23:46:23.319Z",
+      "allOrgs": false
+    }
+  )};
+
+  let token = await fetch('https://vssps.dev.azure.com/{organization}/_apis/tokens/pats?api-version=6.1-preview.1', tokenHeaders);
+  let tokenResponse = await token.json();
+  return tokenResponse.patToken.token;
+}
+const paToken = "Basic " + btoa("Basic" + ":" + createToken());
+//"iinmtwdby2a5k3v6dekdc5y53raw7vsavivuss4fm47l4bu6fwzq"
 const queryWIQL = `{
   "query": "Select [System.Id], [System.Title], [System.State] From WorkItems Where [System.WorkItemType] = 'Maintenance'"}`;
 
