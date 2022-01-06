@@ -35,7 +35,7 @@ async function createToken() {
   let tokenResponse = await token.json();
   return tokenResponse.patToken.token;
 }
-const paToken = "Basic " + btoa("Basic" + ":" + createToken());
+let paToken = "Basic " + btoa("Basic" + ":" + createToken());
 //"iinmtwdby2a5k3v6dekdc5y53raw7vsavivuss4fm47l4bu6fwzq"
 const queryWIQL = `{
   "query": "Select [System.Id], [System.Title], [System.State] From WorkItems Where [System.WorkItemType] = 'Maintenance'"}`;
