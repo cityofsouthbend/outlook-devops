@@ -31,6 +31,7 @@
     <main id="app-body" class="ms-welcome__main" style="display: none;">
         <h2 class="ms-font-xl"> Build an Azure Devops Task/Bug</h2>
         <form>
+            <input type="text" id="ticketCreator" value="" style="visibility: hidden;"><br>
             <input type="radio" id="bug-ticket" name="tickets" value="bug">
             <label for="bug-ticket">Create bug ticket</label><br>
             <input type="radio" id="task-ticket" name="tickets" value="task">
@@ -48,7 +49,7 @@
             <option value="Unassigned"></option>
             <option value="Bill Moody">Bill Moody</option>
             <option value="Jeff Haupt">Jeff Haupt</option>
-            <option value="Jonathan Herbert">Jonathan Herbert</option>
+            <option value="Jonathan Hebert">Jonathan Hebert</option>
             <option value="Julien Miranda">Julien Miranda</option>
             <option value="Kheran Joseph">Kheran Joseph</option>
             <option value="Thomas Sniadecki">Thomas Sniadecki</option>
@@ -56,12 +57,20 @@
         </select>
         </p>
         <p id="item-body"></p>
+        <div id="attachments">
+            Attached files to upload:
+            <p id="files">
 
-        <div role="button" id="run" class="ms-welcome__action ms-Button ms-Button--hero ms-font-xl">
-            <span class="ms-Button-label">Do the thing...</span>
+            </p>
         </div>
+
+        <button id="run">
+            Create Ticket
+        </button>
+        <footer>Version 22.02</footer>
         </form>
     </main>
+    <script type="text/javascript" src="https://alcdn.msauth.net/browser/2.21.0/js/msal-browser.min.js"></script>
     <script src="taskpane.js"></script>
 </body>
 

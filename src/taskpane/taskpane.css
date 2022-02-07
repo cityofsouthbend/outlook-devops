@@ -65,7 +65,7 @@
      margin-top: 30px;
  }
  
-.ms-Button.ms-Button--hero .ms-Button-label {
+/* .ms-Button.ms-Button--hero .ms-Button-label {
   color: #0078d7;
 }
 
@@ -73,6 +73,23 @@
 .ms-Button.ms-Button--hero:focus .ms-Button-label{
   color: #005a9e;
   cursor: pointer;
+} */
+
+button {
+    background-color: #555; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+button:hover {
+    color: #005a9e;
+    background-color: #fff;
+    border: 1px solid #555;
 }
 
 select{
