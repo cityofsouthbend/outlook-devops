@@ -15,11 +15,9 @@ To install you will need to do the following:
 
 2. The next step will be to select ***My Add-Ins** and then ***Add Custom Add-In**:
 
-![Outlook Image](/MicrosoftTeams-image(1).png)
+![Outlook Image](/MicrosoftTeams-imageb.png)
 
-```bash
-pip install foobar
-```
+You will want to install the [manifest.prod.xml](/dist/manifest.prod.xml) file to activate the add-in.
 
 ## Usage
 
