@@ -9,9 +9,13 @@ attached to the ticket as a regular attachment.
 
 To install you will need to do the following:
 
-1.  From Outlook, select ***File*** and then ***Manage Add-Ins***: 
+1.  From Outlook, select ***File** and then ***Manage Add-Ins**: 
 
-![alt text](/MicrosoftTeams-image.png)
+![Outlook Image](/MicrosoftTeams-image.png)
+
+2. The next step will be to select ***My Add-Ins** and then ***Add Custom Add-In**:
+
+![Outlook Image](/MicrosoftTeams-image(1).png)
 
 ```bash
 pip install foobar
