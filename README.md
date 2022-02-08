@@ -21,6 +21,9 @@ You will want to install the [manifest.prod.xml](/dist/manifest.prod.xml) file t
 
 ## Usage
 
+The add-in is based upon Outlook's ReadMessage functions.  Because it's based on reading your Outlook message, the add-in will not activate until a message is selected:
+
+[Closed Add-In]()
 ```python
 import foobar
 
