@@ -1,6 +1,8 @@
 # Outlook Azure Add-in
 
 The Outlook Azure Add-in is a sideloaded plugin that allows users to create 'Task' or 'Bug' DevOps ticket using a received email.
+During the creation of the ticket, users can select whether to include attachments, assign the ticket, and set the title of the ticket. 
+The email is passed to the ticket as both a description and 
 
 ## Installation
 
