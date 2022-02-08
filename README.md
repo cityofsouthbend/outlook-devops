@@ -11,7 +11,6 @@ To install you will need to do the following:
 
 1.  From Outlook, select ***File*** and then ***Manage Add-Ins***: 
 
-<img src="https://dev.azure.com/southbendin/Applications%20-%20Project%20Portfolio/_git/Outlook-Plugin-DevOps?path=/MicrosoftTeams-image.png&version=GBmain">
 
 ```bash
 pip install foobar
