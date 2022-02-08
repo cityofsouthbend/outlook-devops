@@ -30,23 +30,6 @@ const createAttachmentURL2 = ($) => `https://dev.azure.com/southbendin/Applicati
 // this token has an expiration date of 1/23/23
 const paToken = "Basic " + btoa("Basic" + ":" + "p6l4ydakwngcbswzyilmfhidth5vx57veh3djy6vxiiefap5dfaq");
 
-
-async function createToken() {
-  const tokenHeaders = {method: 'POST', body: JSON.stringify(
-    {
-      "displayName": "new_token",
-      "scope": "app_token",
-      "validTo": "2022-12-01T23:46:23.319Z",
-      "allOrgs": false
-    }
-  )};
-
-  let token = await fetch('https://vssps.dev.azure.com/{organization}/_apis/tokens/pats?api-version=6.1-preview.1', tokenHeaders);
-  let tokenResponse = await token.json();
-  return tokenResponse.patToken.token;
-}
-let paToken = "Basic " + btoa("Basic" + ":" + createToken());
-//"iinmtwdby2a5k3v6dekdc5y53raw7vsavivuss4fm47l4bu6fwzq"
 const queryWIQL = `{
   "query": "Select [System.Id], [System.Title], [System.State] From WorkItems Where [System.WorkItemType] = 'Maintenance' AND [System.State] <> 'Archived'"}`;
 
@@ -274,7 +257,6 @@ Office.onReady((info) => {
     
     getMaintenanceItems();
     var item = Office.context.mailbox.item;
-<<<<<<< HEAD
     console.log(item);
     textAttachment += `<p>Begin display of original email</p>
                       <hr>
@@ -294,19 +276,15 @@ Office.onReady((info) => {
       if (!test) {
         filesToInclude += `<input type="checkbox" name="attachedFile" checked value="${attachments[i].name}">${attachments[i].name}<br>`;
       } else {
-        filesToInclude += `<input type="checkbox" name="attachedFile" checked value="${attachments[i].name}" style="visibility:hidden;">${attachments[i].name}<br>`;
+        filesToInclude += `<input type="checkbox" name="attachedFile" checked value="${attachments[i].name}" style="visibility:hidden;"><br>`;
       }
     }
-    filesToInclude += "<hr><p>All inline image files are included by default</p>"
+    filesToInclude += '<hr><p class="small-tag">Inline image files are included by default</p>'
     attachP.innerHTML = filesToInclude;
 
-=======
-
-        
     var attachments = Office.context.mailbox.item.attachments;
     console.log(attachments);
     
->>>>>>> d3c72047e391e7856725fbffc93fd833ce8c836d
     // Write message property value to the task pane
     document.getElementById("item-subject").placeholder = item.subject;
     document.getElementById("ticketCreator").value = ticketCreator; //This is hidden on the html form

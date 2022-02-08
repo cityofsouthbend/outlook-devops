@@ -114,3 +114,13 @@ select, #item-subject {
     padding: 8px;
     border: 2px solid #005a9e;
 }
+
+.small-tag {
+    font-size: .8rem;
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    font-size: .8rem;
+}
