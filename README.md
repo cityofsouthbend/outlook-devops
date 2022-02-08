@@ -23,32 +23,24 @@ You will want to install the [manifest.prod.xml](/dist/manifest.prod.xml) file t
 
 The add-in is based upon Outlook's ReadMessage functions.  Because it's based on reading your Outlook message, the add-in will not activate until a message is selected:
 
-[Closed Add-In](/closed-add-in.png)
+![Closed Add-In](/closed-add-in.png)
 
 Once a message is selected the Add-In becomes active:
 
-[Open Add-in](/outlook-add-in-open.png)
+![Open Add-in](/outlook-add-in-open.png)
 
 To use the Add-in, just provide the information which the form is asking and a new ***Task** or ***Bug** ticket will be created:
 
-[Add-In](/app-screenshot.png)
-```python
-import foobar
+![Add-In](/app-screenshot.png)
 
-# returns 'words'
-foobar.pluralize('word')
+## Support
+Issues with the app?  Why not just create a ticket using the app?
 
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
-```
-
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
+## Roadmap
+There are several changes that I am looking at in terms of future versions:
+- Updating the API calls to the Microsoft Graph API for better access to user accounts 
+- Rebuilding the app within a C# environment to allow for more customization than exists in the Yeoman/Office.js file
+- Including the ability to add an additional description to the main description
 
 ## License
 License???  What license?  
