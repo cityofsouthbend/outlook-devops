@@ -23,7 +23,15 @@ You will want to install the [manifest.prod.xml](/dist/manifest.prod.xml) file t
 
 The add-in is based upon Outlook's ReadMessage functions.  Because it's based on reading your Outlook message, the add-in will not activate until a message is selected:
 
-[Closed Add-In]()
+[Closed Add-In](/closed-add-in.png)
+
+Once a message is selected the Add-In becomes active:
+
+[Open Add-in](/outlook-add-in-open.png)
+
+To use the Add-in, just provide the information which the form is asking and a new ***Task** or ***Bug** ticket will be created:
+
+[Add-In](/app-screenshot.png)
 ```python
 import foobar
 
