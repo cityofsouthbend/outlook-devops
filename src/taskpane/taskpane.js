@@ -156,15 +156,35 @@ function addAttachmentHeader(attachURL, textAttachment) {
       "path": "/fields/System.Description",
       "value": `${textAttachment}`
     }
-  
   ];
+
   const headerAddAttachment = {
     method: "PATCH",
     headers: { "Content-Type": "application/json-patch+json", Authorization: paToken },
     body: JSON.stringify(newBody({val: attachURL}))
   };
-  return headerAddAttachment;
-}
+    return headerAddAttachment;
+  } 
+
+  function addIterationPath(path) {
+    const newBody = ($) => [
+        {
+          "op": "add",
+          "path": "/fields/System.IterationPath",
+          "from": null,
+          "value": `${$.val}`
+        }
+      ];
+  
+    const headerAddAttachment = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json-patch+json", Authorization: paToken },
+      body: JSON.stringify(newBody({val: path}))
+    };
+      return headerAddAttachment;
+    } 
+
+
 
 async function getMaintenanceItems() {
   let responseWIQL = await fetch(wiqlURL, headersWIQL);
@@ -186,10 +206,8 @@ async function handleAttachments(attachment, ticketInfo) {
           body: blob
         }).then( res =>  res.json())
           .then ( async (data) => {
-            console.log(data);
             let temp = textAttachment.replace(`src="cid:${attachment.ContentId}"`, `src="${data.url}"`);
             textAttachment = temp;
-            console.log(textAttachment)
             await fetch(updateAttachmentURL({val: ticketInfo.id}), addAttachmentHeader(data.url, textAttachment))
             .then( res => res.json())
           });
@@ -212,6 +230,7 @@ function createNewTicket() {
 
   let createTicketMethod = () => {
     getCreator.then( (creator) => {
+      console.log(textAttachment);
       fetch(ticketURL({val: ticketType}), createTicketHeader(parent, ticketTitle, creator, assignedDev))
         .then( res => res.json())
         .then( async (dataTicket) => {
@@ -219,8 +238,18 @@ function createNewTicket() {
           // adding the email body as a html file (includes inline images)
           let resAttach = await fetch(createAttachmentURL, createAttachmentHeader(textAttachment));
           let dataAttach = await resAttach.json()
-          let addAttach = await fetch(updateAttachmentURL({val: dataTicket.id}), addAttachmentHeader(dataAttach.url));
+          let addAttach = await fetch(updateAttachmentURL({val: dataTicket.id}), addAttachmentHeader(dataAttach.url, textAttachment));
   
+          let currentIteration = await fetch("https://dev.azure.com/southbendin/Applications%20-%20Project%20Portfolio/_apis/work/teamsettings/iterations?$timeframe=current&api-version=6.0", {
+            method: "GET",
+            headers: { "Content-Type": "application/json", Authorization: paToken }
+          });
+          let dataIteration = await currentIteration.json()
+          console.log(dataIteration)
+          let currentPath = await fetch(updateAttachmentURL({val: dataTicket.id}), addIterationPath(dataIteration.value[0].path));
+          let response = currentPath.json()
+          console.log(response)
+
           // adding attachments selected by user
           const tempSelected = document.querySelectorAll('input[type="checkbox"]:checked');
           for (let g = 0; g < tempSelected.length; g++ ) {
@@ -253,6 +282,7 @@ Office.onReady((info) => {
     btn.addEventListener("click", () => {
       run();
       btn.setAttribute("disabled", "");
+      btn.innerHTML = '<i class="fa-solid fa-spinner"></i> Loading';
     })
     
     getMaintenanceItems();

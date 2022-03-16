@@ -18,6 +18,7 @@
 
     <!-- Template styles -->
     <link href="taskpane.css" rel="stylesheet" type="text/css" />
+    <script src="https://kit.fontawesome.com/c018726265.js" crossorigin="anonymous"></script>
 </head>
 
 <body class="ms-font-m ms-welcome ms-Fabric">
@@ -40,7 +41,7 @@
         <span>Select parent item: </span><br>
         <p id="dropdown"></p>
         <label id="subject-label">Enter new ticket title: <br>
-            <input type="text" id="item-subject">
+            <input type="text" id="item-subject" autocomplete="off">
         </label>
         <br><br>
         <span>Assign ticket: </span>
@@ -67,7 +68,12 @@
         <button id="run">
             Create Ticket
         </button>
-        <footer>Version 22.02</footer>
+        <!-- 
+            Prior versions: 22.02 
+
+         -->
+        <footer>Version 22.03</footer>
+        <!-- 22.03 changes include updating button to include loading icon; some basic UI changes including hiding some elements as tooltips; and clearing out suggested text for form -->
         </form>
     </main>
     <script type="text/javascript" src="https://alcdn.msauth.net/browser/2.21.0/js/msal-browser.min.js"></script>
