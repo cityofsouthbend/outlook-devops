@@ -1,20 +1,46 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Outlook Azure Add-in
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+The Outlook Azure Add-in is a sideloaded plugin that allows users to create 'Task' or 'Bug' DevOps ticket using a received email.
+During the creation of the ticket, users can select whether to include attachments, assign the ticket, and set the title of the ticket. 
+The email (with inline images embedded) is passed to the ticket as both a description and an attached html file.  Any other attachments are 
+attached to the ticket as a regular attachment.  
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Installation
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+To install you will need to do the following:
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+1.  From Outlook, select ***File** and then ***Manage Add-Ins**: 
+
+![Outlook Image](/MicrosoftTeams-image.png)
+
+2. The next step will be to select ***My Add-Ins** and then ***Add Custom Add-In**:
+
+![Outlook Image](/MicrosoftTeams-imageb.png)
+
+You will want to install the [manifest.prod.xml](/dist/manifest.prod.xml) file to activate the add-in.
+
+## Usage
+
+The add-in is based upon Outlook's ReadMessage functions.  Because it's based on reading your Outlook message, the add-in will not activate until a message is selected:
+
+![Closed Add-In](/closed-add-in.png)
+
+Once a message is selected the Add-In becomes active:
+
+![Open Add-in](/outlook-add-in-open.png)
+
+To use the Add-in, just provide the information which the form is asking and a new ***Task** or ***Bug** ticket will be created:
+
+![Add-In](/app-screenshot.png)
+
+## Support
+Issues with the app?  Why not just create a ticket using the app?
+
+## Roadmap
+There are several changes that I am looking at in terms of future versions:
+- Updating the API calls to the Microsoft Graph API for better access to user accounts 
+- Rebuilding the app within a C# environment to allow for more customization than exists in the Yeoman/Office.js file
+- Including the ability to add an additional description to the main description
+
+## License
+License???  What license?  
