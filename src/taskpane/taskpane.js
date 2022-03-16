@@ -282,7 +282,7 @@ Office.onReady((info) => {
     btn.addEventListener("click", () => {
       run();
       btn.setAttribute("disabled", "");
-      btn.innerHTML = '<i class="fa-solid fa-spinner"></i> Loading';
+      btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Loading';
     })
     
     getMaintenanceItems();
