@@ -1,3 +1,7 @@
+# DEPRECATED - NOT WORKING 
+
+Recent versions of Node have caused issues with security in older Node applications. Given that and given the potential to move away from DevOps, I am deprecating this app - JMH
+
 # Outlook Azure Add-in
 
 The Outlook Azure Add-in is a sideloaded plugin that allows users to create 'Task' or 'Bug' DevOps ticket using a received email.
