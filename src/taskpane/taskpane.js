@@ -9,6 +9,7 @@
 import "../../assets/icon-16.png";
 import "../../assets/icon-32.png";
 import "../../assets/icon-80.png";
+import { idURL, ticketURL } from "./components/functions.js";
 
 let textAttachment = "";
 let attachments = [];
@@ -18,17 +19,17 @@ let token = "";
 
 
 // declaring variables (or functions that return urls) for url addresses to use in various api calls
-const idURL = ($) => `https://dev.azure.com/southbendin/_apis/wit/workitems?ids=${$.val}&api-version=6.0`;
+// const idURL = ($) => `https://dev.azure.com/southbendin/_apis/wit/workitems?ids=${$.val}&api-version=6.0`;
 const wiqlURL = 'https://dev.azure.com/southbendin/_apis/wit/wiql?api-version=6.0';
-const ticketURL = ($) =>
-  `https://dev.azure.com/southbendin/Applications%20-%20Project%20Portfolio/_apis/wit/workitems/$${$.val}?bypassrules=true&api-version=6.0`;
+// const ticketURL = ($) =>
+//   `https://dev.azure.com/southbendin/Digital%20-%20Product%20Portfolio/_apis/wit/workitems/$${$.val}?bypassrules=true&api-version=6.0`;
 const updateAttachmentURL = ($) => `https://dev.azure.com/southbendin/_apis/wit/workitems/${$.val}?api-version=6.0`;
-const createAttachmentURL = `https://dev.azure.com/southbendin/Applications%20-%20Project%20Portfolio/_apis/wit/attachments?fileName=OriginalEmail.html&api-version=6.0`;
-const createAttachmentURL2 = ($) => `https://dev.azure.com/southbendin/Applications%20-%20Project%20Portfolio/_apis/wit/attachments?fileName=${$.val}&api-version=5.1`;
+const createAttachmentURL = `https://dev.azure.com/southbendin/Digital%20-%20Product%20Portfolio/_apis/wit/attachments?fileName=OriginalEmail.html&api-version=6.0`;
+const createAttachmentURL2 = ($) => `https://dev.azure.com/southbendin/Digital%20-%20Product%20Portfolio/_apis/wit/attachments?fileName=${$.val}&api-version=5.1`;
 
 // the token is assigned to appsadmin@southbendin.gov - we may want to rethink this in future releases with using the Microsoft Graph API
 // this token has an expiration date of 1/23/23
-const paToken = "Basic " + btoa("Basic" + ":" + "p6l4ydakwngcbswzyilmfhidth5vx57veh3djy6vxiiefap5dfaq");
+const paToken = "Basic " + btoa("Basic" + ":" + "fcajyldotexdyluqenqd6lrqdimrr6shgrbdthg6tbmv4jpyikka");
 
 const queryWIQL = `{
   "query": "Select [System.Id], [System.Title], [System.State] From WorkItems Where [System.WorkItemType] = 'Maintenance' AND [System.State] <> 'Archived'"}`;
@@ -82,7 +83,7 @@ function grabFormItems() {
 }
 
 function createTicketHeader(parent, ticketTitle, creator, dev) {
-  fetch('https://dev.azure.com/southbendin/Applications%20-%20Project%20Portfolio/_apis/work/teamsettings/iterations?$timeframe=current&api-version=6.0')
+  fetch('https://dev.azure.com/southbendin/Digital%20-%20Product%20Portfolio/_apis/work/teamsettings/iterations?$timeframe=current&api-version=6.0')
     .then( res => console.log(res));
   const newBody = ($1, $2) => [
     {"op": "add", "path": "/fields/System.Title", "from": null, "value": `${$1.val}` },
@@ -240,7 +241,7 @@ function createNewTicket() {
           let dataAttach = await resAttach.json()
           let addAttach = await fetch(updateAttachmentURL({val: dataTicket.id}), addAttachmentHeader(dataAttach.url, textAttachment));
   
-          let currentIteration = await fetch("https://dev.azure.com/southbendin/Applications%20-%20Project%20Portfolio/_apis/work/teamsettings/iterations?$timeframe=current&api-version=6.0", {
+          let currentIteration = await fetch("https://dev.azure.com/southbendin/Digital%20-%20Product%20Portfolio/_apis/work/teamsettings/iterations?$timeframe=current&api-version=6.0", {
             method: "GET",
             headers: { "Content-Type": "application/json", Authorization: paToken }
           });
@@ -266,7 +267,7 @@ function createNewTicket() {
 
 
           // When sideloaded app has completed this message is printed to the user's sideload window
-          document.getElementById("app-body").innerHTML = `<div>DevOps ticket ${dataTicket.id} has been created. View the ticket in DevOps <a href="https://dev.azure.com/southbendin/Applications%20-%20Project%20Portfolio/_workitems/edit/${dataTicket.id}" target="_blank">here</a></div>`;
+          document.getElementById("app-body").innerHTML = `<div>DevOps ticket ${dataTicket.id} has been created. View the ticket in DevOps <a href="https://dev.azure.com/southbendin/Digital%20-%20Product%20Portfolio/_workitems/edit/${dataTicket.id}" target="_blank">here</a></div>`;
         })
       });
   }
