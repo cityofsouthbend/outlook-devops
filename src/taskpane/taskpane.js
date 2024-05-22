@@ -27,9 +27,11 @@ const updateAttachmentURL = ($) => `https://dev.azure.com/southbendin/_apis/wit/
 const createAttachmentURL = `https://dev.azure.com/southbendin/Digital%20-%20Product%20Portfolio/_apis/wit/attachments?fileName=OriginalEmail.html&api-version=6.0`;
 const createAttachmentURL2 = ($) => `https://dev.azure.com/southbendin/Digital%20-%20Product%20Portfolio/_apis/wit/attachments?fileName=${$.val}&api-version=5.1`;
 
-// the token is assigned to appsadmin@southbendin.gov - we may want to rethink this in future releases with using the Microsoft Graph API
-// this token has an expiration date of 1/23/23
-const paToken = "Basic " + btoa("Basic" + ":" + "fcajyldotexdyluqenqd6lrqdimrr6shgrbdthg6tbmv4jpyikka");
+// the token is assigned to jhaupt@southbendin.gov
+// this token has an expiration date of 5/21/24 
+// we'll want to move this to an environment variable in the near future
+
+const paToken = "Basic " + btoa("Basic" + ":" + "egzn25iz4mz74u4dhm2wfaufimnmns4lwtn57mbhfcvcxeahogya");
 
 const queryWIQL = `{
   "query": "Select [System.Id], [System.Title], [System.State] From WorkItems Where [System.WorkItemType] = 'Maintenance' AND [System.State] <> 'Archived'"}`;
@@ -293,7 +295,7 @@ Office.onReady((info) => {
                       <hr>
                       <p>From: ${item.from.displayName} <br>
                       Email: ${item.from.emailAddress} <br>`
-    var ticketCreator = Office.context.mailbox.userProfile.displayName;
+    var ticketCreator = Office.context.mailbox.userProfile.displayName;https://dev.azure.com/southbendin/Digital%20-%20Product%20Portfolio/_analytics
 
     // grab the info about attachments from the email 
     attachments = Office.context.mailbox.item.attachments;
