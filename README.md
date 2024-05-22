@@ -1,6 +1,3 @@
-# DEPRECATED - NOT WORKING 
-
-Recent versions of Node have caused issues with security in older Node applications. Given that and given the potential to move away from DevOps, I am deprecating this app - JMH
 
 # Outlook Azure Add-in
 
