@@ -33,9 +33,11 @@ const createAttachmentURL2 = ($) => `https://dev.azure.com/southbendin/Digital%2
 
 const paToken = "Basic " + btoa("Basic" + ":" + "egzn25iz4mz74u4dhm2wfaufimnmns4lwtn57mbhfcvcxeahogya");
 
+// Cameron WIQL Questions 1 & 2 - see documentation https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/wiql/query-by-wiql?view=azure-devops-rest-7.1&tabs=HTTP
 const queryWIQL = `{
   "query": "Select [System.Id], [System.Title], [System.State] From WorkItems Where [System.WorkItemType] = 'Maintenance' AND [System.State] <> 'Archived'"}`;
 
+// Cameron WIQL Questions 1 & 2 - see documentation https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/wiql/query-by-wiql?view=azure-devops-rest-7.1&tabs=HTTP
 const headersWIQL = {
   method: "POST",
   headers: { "Content-Type": "application/json;charset=utf-8", Authorization: paToken },
@@ -46,6 +48,7 @@ const headersMaintenance = {
   method: "GET",
   headers: { "Content-Type": "application/json", Authorization: paToken }};
 
+  // used to create string of ids for API call to grab multiple work items: https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/list?view=azure-devops-rest-7.1&tabs=HTTP
 function concatIDs(data) {
   let str = "";
   data.workItems.forEach((element) => { str += element.id + ","  });
@@ -53,17 +56,21 @@ function concatIDs(data) {
 }
 
 function createDropdown(data) {
+  // see this article for more info on Maps https://javascript.info/map-set
   const maintenanceItems = new Map();
   let html = `<select id="parentItem" name="parentItem">`;
   for (let d = 0; d < data.length; d++) {
     maintenanceItems.set(data[d].id, data[d].fields["System.Title"]);
   }
   const sortedItems = new Map([...maintenanceItems].sort((a, b) => String(a[1]).localeCompare(b[1])));
+
+  // creating each individual option for the dropdown
   sortedItems.forEach(function (v, k) {
     let htmlSegment = `<option value="${k}">${v} - Maintenance Item: ${k}</option>`;
     html += htmlSegment;
   }); 
   html += `</select>`;
+  // see https://javascript.info/searching-elements-dom#querySelector for more info on querySelector
   let container = document.querySelector("#dropdown");
   container.innerHTML = html;
 }
@@ -71,7 +78,8 @@ function createDropdown(data) {
 function grabFormItems() {
   let selectResult = document.getElementById("parentItem").value;
   //Get bug or task ticket
-  let ticketType = document.getElementById("bug-ticket").checked ? "Bug" : "Task";
+  let ticketType = document.getElementById("issue-ticket").checked ? "Issue" : "Request";
+  console.log(ticketType);
   //get title for ticket
   let ticketTitle = document.getElementById("item-subject");
   let ticketTitleValue = "";
@@ -190,11 +198,16 @@ function addAttachmentHeader(attachURL, textAttachment) {
 
 
 async function getMaintenanceItems() {
+  // Cameron WIQL Questions 1 & 2 - see documentation https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/wiql/query-by-wiql?view=azure-devops-rest-7.1&tabs=HTTP
   let responseWIQL = await fetch(wiqlURL, headersWIQL);
+  // getting WIQL response from DevOps API call above 
   let dataWIQL = await responseWIQL.json();
+
+  // https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/work-items/list?view=azure-devops-rest-7.1&tabs=HTTP
   let ids = concatIDs(dataWIQL);
   let responseMaintenance = await fetch(idURL({val: ids}), headersMaintenance);
   let dataMaintenance = await responseMaintenance.json();
+
   createDropdown(dataMaintenance.value);
 }
 
