@@ -31,7 +31,7 @@ const createAttachmentURL2 = ($) => `https://dev.azure.com/southbendin/Digital%2
 // this token has an expiration date of 5/21/24 
 // we'll want to move this to an environment variable in the near future
 
-const paToken = "Basic " + btoa("Basic" + ":" + "egzn25iz4mz74u4dhm2wfaufimnmns4lwtn57mbhfcvcxeahogya");
+const paToken = "Basic " + btoa("Basic" + ":" + "**************************"); //token hidden
 
 // Cameron WIQL Questions 1 & 2 - see documentation https://learn.microsoft.com/en-us/rest/api/azure/devops/wit/wiql/query-by-wiql?view=azure-devops-rest-7.1&tabs=HTTP
 const queryWIQL = `{
