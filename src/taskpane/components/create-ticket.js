@@ -3,7 +3,7 @@
 import {
   createWorkItem,
   uploadAttachment,
-  addAttachmentToWorkItem,
+  addAttachmentRelation,
   updateWorkItemField,
   setCurrentIteration,
   getGraphUsers,
@@ -179,9 +179,10 @@ async function handleCreate() {
     const users = await getGraphUsers();
     const creator = users.find((u) => u.displayName === creatorName);
 
-    // Build patch ops
+    // Build patch ops - include body field at creation time
     const patchOps = [
       { op: "add", path: "/fields/System.Title", from: null, value: ticketTitle },
+      { op: "add", path: `/fields/${bodyField}`, value: emailBody },
     ];
 
     if (creator) {
@@ -258,9 +259,14 @@ async function handleCreate() {
       console.warn("getAttachmentContentAsync not available - inline images will not be resolved");
     }
 
-    // Upload email body as HTML attachment and set the body field (with resolved images)
+    // Update body field with resolved inline images (if any were processed)
+    if (canGetContent && allAttachments.some((a) => a.isInline)) {
+      await updateWorkItemField(ticket.id, bodyField, emailBody);
+    }
+
+    // Upload email body as HTML file attachment
     const attachData = await uploadAttachment("OriginalEmail.html", emailBody);
-    await addAttachmentToWorkItem(ticket.id, attachData.url, emailBody, bodyField);
+    await addAttachmentRelation(ticket.id, attachData.url);
 
     // Set current iteration
     await setCurrentIteration(ticket.id);
@@ -288,7 +294,7 @@ async function handleCreate() {
             }
 
             const fileData = await uploadAttachment(att.name, blob);
-            await addAttachmentToWorkItem(ticket.id, fileData.url, emailBody, bodyField);
+            await addAttachmentRelation(ticket.id, fileData.url);
           } catch (err) {
             console.warn(`Skipping attachment ${att.name}: ${err.message}`);
           }

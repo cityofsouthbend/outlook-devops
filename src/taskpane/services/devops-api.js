@@ -88,8 +88,7 @@ export async function uploadAttachment(fileName, blob) {
   return res.json();
 }
 
-export async function addAttachmentToWorkItem(workItemId, attachUrl, bodyHtml, bodyField) {
-  const field = bodyField || "System.Description";
+export async function addAttachmentRelation(workItemId, attachUrl) {
   const ops = [
     {
       op: "add",
@@ -100,7 +99,6 @@ export async function addAttachmentToWorkItem(workItemId, attachUrl, bodyHtml, b
         attributes: { comment: "Created with Outlook Azure add-in" },
       },
     },
-    { op: "add", path: `/fields/${field}`, value: bodyHtml },
   ];
   return apiPatch(`${BASE}/_apis/wit/workitems/${workItemId}?api-version=6.0`, ops);
 }
