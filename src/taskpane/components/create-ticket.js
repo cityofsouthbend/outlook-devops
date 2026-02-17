@@ -15,10 +15,20 @@ import {
   getCurrentUserName,
   getEmailBody,
   getAttachmentContent,
+  getAttachmentContentViaRest,
 } from "../services/outlook-mail.js";
 import { setButtonLoading, showStatus, debounce, hideStatus } from "./ui-helpers.js";
 
 let selectedParentId = null;
+
+async function fetchAttachmentContent(attachmentId) {
+  try {
+    return await getAttachmentContentViaRest(attachmentId);
+  } catch (restErr) {
+    console.warn("REST attachment fetch failed, trying Office.js fallback:", restErr.message);
+    return await getAttachmentContent(attachmentId);
+  }
+}
 
 function getBodyField() {
   return "System.Description";
@@ -229,17 +239,15 @@ async function handleCreate() {
       for (let i = 0; i < inlineAtts.length; i++) {
         const att = inlineAtts[i];
         try {
-          // Small delay between calls to avoid message channel conflicts
-          if (i > 0) await new Promise((r) => setTimeout(r, 200));
-
-          const content = await getAttachmentContent(att.id);
+          const content = await fetchAttachmentContent(att.id);
 
           // Handle both base64 and url formats returned by Office.js
           let blob;
           if (content.format === Office.MailboxEnums.AttachmentContentFormat.Url) {
             blob = await fetch(content.content).then((r) => r.blob());
           } else {
-            blob = await fetch(`data:${att.contentType};base64,${content.content}`).then((r) =>
+            const ct = content.contentType || att.contentType;
+            blob = await fetch(`data:${ct};base64,${content.content}`).then((r) =>
               r.blob()
             );
           }
@@ -273,21 +281,18 @@ async function handleCreate() {
     // Upload selected file attachments (non-inline)
     if (canGetContent) {
       const checked = document.querySelectorAll('#attachment-list input[type="checkbox"]:checked');
-      let fileIdx = 0;
       for (const checkbox of checked) {
         const att = allAttachments.find((a) => a.name === checkbox.value);
         if (att) {
           try {
-            if (fileIdx > 0) await new Promise((r) => setTimeout(r, 200));
-            fileIdx++;
-
-            const content = await getAttachmentContent(att.id);
+            const content = await fetchAttachmentContent(att.id);
 
             let blob;
             if (content.format === Office.MailboxEnums.AttachmentContentFormat.Url) {
               blob = await fetch(content.content).then((r) => r.blob());
             } else {
-              blob = await fetch(`data:${att.contentType};base64,${content.content}`).then((r) =>
+              const ct = content.contentType || att.contentType;
+              blob = await fetch(`data:${ct};base64,${content.content}`).then((r) =>
                 r.blob()
               );
             }
