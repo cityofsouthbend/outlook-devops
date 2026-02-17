@@ -7,9 +7,25 @@ pool:
 steps:
   - checkout: self
     submodules: true
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '18.x'
+    displayName: 'Install Node.js'
+
+  - script: |
+      npm ci
+      npm run build
+    displayName: 'Install dependencies and build'
+    env:
+      DEVOPS_PAT: $(DEVOPS_PAT)
+      DEVOPS_ORG: $(DEVOPS_ORG)
+      DEVOPS_PROJECT: $(DEVOPS_PROJECT)
+
   - task: AzureStaticWebApp@0
     inputs:
       app_location: '/dist'
       api_location: 'api'
-      output_location: '/src'
+      output_location: ''
+      skip_app_build: true
       azure_static_web_apps_api_token: $(deployment_token)

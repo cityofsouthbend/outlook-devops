@@ -3,9 +3,10 @@
 const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
 
 const urlDev = "https://localhost:3000/";
-const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
+const urlProd = "https://outlookazureaddin.z22.web.core.windows.net/";
 
 async function getHttpsOptions() {
   const httpsOptions = await devCerts.getHttpsServerOptions();
@@ -44,7 +45,16 @@ module.exports = async (env, options) => {
         {
           test: /\.html$/,
           exclude: /node_modules/,
-          use: "html-loader",
+          use: {
+            loader: "html-loader",
+            options: {
+              sources: {
+                list: [
+                  { tag: "img", attribute: "src", type: "src" },
+                ],
+              },
+            },
+          },
         },
         {
           test: /\.(png|jpg|jpeg|gif|ico)$/,
@@ -56,6 +66,7 @@ module.exports = async (env, options) => {
       ],
     },
     plugins: [
+      new Dotenv({ systemvars: true }),
       new HtmlWebpackPlugin({
         filename: "taskpane.html",
         template: "./src/taskpane/taskpane.html",
@@ -73,6 +84,14 @@ module.exports = async (env, options) => {
                 return content.toString().replace(new RegExp(urlDev, "g"), urlProd);
               }
             },
+          },
+          {
+            from: "src/taskpane/taskpane.css",
+            to: "taskpane.css",
+          },
+          {
+            from: "assets/*.png",
+            to: "assets/[name][ext]",
           },
         ],
       }),

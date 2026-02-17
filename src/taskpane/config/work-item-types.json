@@ -1,0 +1,7 @@
+[
+  { "value": "Issue", "label": "Issue" },
+  { "value": "Request", "label": "Request" },
+  { "value": "Project", "label": "Project" },
+  { "value": "Task", "label": "Task" },
+  { "value": "Sticky Notes", "label": "Sticky Notes" }
+]

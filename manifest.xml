@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0" xsi:type="MailApp">
   <Id>e1b7a0b1-c18c-4813-b3f4-766a0f607651</Id>
-  <Version>1.0.0.0</Version>
+  <Version>2.0.0.0</Version>
   <ProviderName>City of South Bend</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="Azure-Outlook"/>
-  <Description DefaultValue="MS Outlook add-in that allows received emails to be assigned to Azure DevOps maintenance items as either bug or task tickets."/>
+  <Description DefaultValue="Outlook add-in for Azure DevOps: create work items, search/browse, and insert rich cards into email drafts."/>
   <IconUrl DefaultValue="https://outlookazureaddin.z22.web.core.windows.net/assets/icon-64.png"/>
   <HighResolutionIconUrl DefaultValue="https://outlookazureaddin.z22.web.core.windows.net/assets/icon-128.png"/>
-  <SupportUrl DefaultValue="https://www.contoso.com/help"/>
+  <SupportUrl DefaultValue="https://outlookazureaddin.z22.web.core.windows.net"/>
   <AppDomains>
-    <AppDomain>https://www.contoso.com</AppDomain>
+    <AppDomain>https://outlookazureaddin.z22.web.core.windows.net</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Mailbox"/>
   </Hosts>
   <Requirements>
     <Sets>
-      <Set Name="Mailbox" MinVersion="1.1"/>
+      <Set Name="Mailbox" MinVersion="1.8"/>
     </Sets>
   </Requirements>
   <FormSettings>
@@ -27,15 +27,21 @@
         <RequestedHeight>250</RequestedHeight>
       </DesktopSettings>
     </Form>
+    <Form xsi:type="ItemEdit">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://outlookazureaddin.z22.web.core.windows.net/taskpane.html"/>
+      </DesktopSettings>
+    </Form>
   </FormSettings>
-  <Permissions>ReadWriteItem</Permissions>
+  <Permissions>ReadWriteMailbox</Permissions>
   <Rule xsi:type="RuleCollection" Mode="Or">
     <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Edit"/>
   </Rule>
   <DisableEntityHighlighting>false</DisableEntityHighlighting>
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
     <Requirements>
-      <bt:Sets DefaultMinVersion="1.3">
+      <bt:Sets DefaultMinVersion="1.8">
         <bt:Set Name="Mailbox"/>
       </bt:Sets>
     </Requirements>
@@ -62,21 +68,28 @@
                     <SourceLocation resid="Taskpane.Url"/>
                   </Action>
                 </Control>
-                <!-- <Control xsi:type="Button" id="ActionButton">
-                  <Label resid="ActionButton.Label"/>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+          <ExtensionPoint xsi:type="MessageComposeCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgComposeGroup">
+                <Label resid="GroupLabel"/>
+                <Control xsi:type="Button" id="msgComposeOpenPaneButton">
+                  <Label resid="ComposeButton.Label"/>
                   <Supertip>
-                    <Title resid="ActionButton.Label"/>
-                    <Description resid="ActionButton.Tooltip"/>
+                    <Title resid="ComposeButton.Label"/>
+                    <Description resid="ComposeButton.Tooltip"/>
                   </Supertip>
                   <Icon>
                     <bt:Image size="16" resid="Icon.16x16"/>
                     <bt:Image size="32" resid="Icon.32x32"/>
                     <bt:Image size="80" resid="Icon.80x80"/>
                   </Icon>
-                  <Action xsi:type="ExecuteFunction">
-                    <FunctionName>action</FunctionName>
+                  <Action xsi:type="ShowTaskpane">
+                    <SourceLocation resid="Taskpane.Url"/>
                   </Action>
-                </Control> -->
+                </Control>
               </Group>
             </OfficeTab>
           </ExtensionPoint>
@@ -96,11 +109,11 @@
       <bt:ShortStrings>
         <bt:String id="GroupLabel" DefaultValue="Azure DevOps"/>
         <bt:String id="TaskpaneButton.Label" DefaultValue="Create DevOps Ticket"/>
-        <bt:String id="ActionButton.Label" DefaultValue="Perform an action"/>
+        <bt:String id="ComposeButton.Label" DefaultValue="DevOps Lookup"/>
       </bt:ShortStrings>
       <bt:LongStrings>
-        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Opens a pane displaying all available properties."/>
-        <bt:String id="ActionButton.Tooltip" DefaultValue="Perform an action when clicked."/>
+        <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Open the Azure DevOps task pane to create work items from this email."/>
+        <bt:String id="ComposeButton.Tooltip" DefaultValue="Search Azure DevOps work items and insert cards into your email."/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

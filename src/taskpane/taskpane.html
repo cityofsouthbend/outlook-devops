@@ -1,6 +1,3 @@
-<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
-<!-- This file shows how to design a first-run page that provides a welcome screen to the user about the features of the add-in. -->
-
 <!DOCTYPE html>
 <html>
 
@@ -13,73 +10,91 @@
     <!-- Office JavaScript API -->
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
 
-    <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
+    <!-- Fluent UI -->
     <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.6.1/css/fabric.min.css"/>
 
-    <!-- Template styles -->
     <link href="taskpane.css" rel="stylesheet" type="text/css" />
-    <script src="https://kit.fontawesome.com/c018726265.js" crossorigin="anonymous"></script>
 </head>
 
-<body class="ms-font-m ms-welcome ms-Fabric">
-    <header class="ms-welcome__header ms-bgColor-neutralLighter">
-        <img width="90" height="90" src="../../assets/logo-filled.png" alt="Contoso" title="Contoso" />
-        
+<body class="ms-font-m ms-Fabric">
+    <!-- Header -->
+    <header class="app-header">
+        <img width="32" height="32" src="../../assets/logo-filled.png" alt="Logo" />
+        <span class="app-title ms-font-l">Azure DevOps</span>
     </header>
-    <section id="sideload-msg" class="ms-welcome__main">
-        <h2 class="ms-font-xl">Please sideload your add-in to see app body.</h2>
-    </section>
-    <main id="app-body" class="ms-welcome__main" style="display: none;">
-        <h2 class="ms-font-xl"> Build an Azure Devops Task/Bug</h2>
-        <form>
-            <input type="text" id="ticketCreator" value="" style="visibility: hidden;"><br>
-            <input type="radio" id="issue-ticket" name="tickets" value="issue">
-            <label for="bug-ticket">Create issue ticket</label><br>
-            <input type="radio" id="request-ticket" name="tickets" value="request">
-            <label for="task-ticket">Create request ticket</label><br>
-            <br>
-        <span>Select parent item: </span><br>
-        <p id="dropdown"></p>
-        <label id="subject-label">Enter new ticket title: <br>
-            <input type="text" id="item-subject" autocomplete="off">
-        </label>
-        <br><br>
-        <span>Assign ticket: </span>
-        <p>
-        <select name="users" id="users">
-            <option value="Unassigned"></option>
-            <option value="Kerry Joseph">Kerry Joseph</option>
-            <option value="Jeff Haupt">Jeff Haupt</option>
-            <option value="Lucy Macfarlane">Lucy Macfarlane</option>
-            <option value="Lisa Brandush">Lisa Brandush</option>
-            <option value="Justin Russell">Justin Russell</option>
-            <option value="Andrea Sandusky">Andrea Sandusky</option>
-            <option value="Nick Hammerstrom">Nick Hammerstrom</option>
-            <option value="Annelotte Tobongbanua">Anna Tobongbanua</option>
-            <option value="Sai Morapakala">Sai Morapakala</option>
-        </select>
-        </p>
-        <p id="item-body"></p>
-        <div id="attachments" title="Inline attachments are added by default">
-            Attached files to upload:
-            <p id="files">
 
-            </p>
+    <!-- Status banner -->
+    <div id="status-banner" class="status-banner" style="display:none;"></div>
+
+    <!-- Sideload message -->
+    <section id="sideload-msg" class="sideload-msg">
+        <p class="ms-font-l">Please sideload your add-in to see app body.</p>
+    </section>
+
+    <!-- Tab navigation -->
+    <nav id="tab-nav" class="tab-nav" style="display:none;">
+        <button class="tab-btn active" data-tab="create">Create Ticket</button>
+        <button class="tab-btn" data-tab="search">Search Items</button>
+        <button class="tab-btn" data-tab="insert">Insert into Email</button>
+    </nav>
+
+    <!-- CREATE TAB -->
+    <section id="tab-create" class="tab-panel" style="display:none;">
+        <h3 class="ms-font-m-plus">Create Work Item</h3>
+
+        <div class="form-group">
+            <label class="form-label">Work item type:</label>
+            <div id="work-item-types" class="radio-group"></div>
         </div>
 
-        <button id="run">
-            Create Ticket
-        </button>
-        <!-- 
-            Prior versions: 22.03 
+        <div class="form-group">
+            <label class="form-label" for="parent-search">Parent item:</label>
+            <input type="text" id="parent-search" class="form-input" placeholder="Search by title or ID..." autocomplete="off" />
+            <div id="parent-results" class="parent-results"></div>
+            <div id="selected-parent" class="selected-parent" style="display:none;"></div>
+        </div>
 
-         -->
-        <footer>Version 22.04</footer>
-        <!-- 22.04 added "tooltip functionality to let users know about inline attachments" -->
-        </form>
-    </main>
-    <script type="text/javascript" src="https://alcdn.msauth.net/browser/2.21.0/js/msal-browser.min.js"></script>
-    <script src="taskpane.js"></script>
+        <div class="form-group">
+            <label class="form-label" for="item-subject">Title:</label>
+            <input type="text" id="item-subject" class="form-input" autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="team-select">Assign to:</label>
+            <select id="team-select" class="form-select"></select>
+        </div>
+
+        <div class="form-group" id="attachments-group" style="display:none;">
+            <label class="form-label">Attachments:</label>
+            <div id="attachment-list"></div>
+        </div>
+
+        <button id="btn-create" class="btn btn-primary">Create Ticket</button>
+    </section>
+
+    <!-- SEARCH TAB -->
+    <section id="tab-search" class="tab-panel" style="display:none;">
+        <h3 class="ms-font-m-plus">Search Work Items</h3>
+        <div class="search-bar">
+            <input type="text" id="search-input" class="form-input" placeholder="Search by title or ID..." autocomplete="off" />
+            <select id="search-type-filter" class="form-select form-select-small">
+                <option value="">All types</option>
+            </select>
+        </div>
+        <div id="search-results" class="search-results">
+            <p class="placeholder-text">Enter a search term above.</p>
+        </div>
+    </section>
+
+    <!-- INSERT TAB -->
+    <section id="tab-insert" class="tab-panel" style="display:none;">
+        <h3 class="ms-font-m-plus">Insert into Email</h3>
+        <div id="insert-preview" class="insert-preview">
+            <p class="placeholder-text">Select a work item from Search to preview.</p>
+        </div>
+        <button id="btn-insert" class="btn btn-primary" style="display:none;">Insert Card</button>
+    </section>
+
 </body>
 
 </html>
