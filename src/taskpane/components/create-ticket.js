@@ -20,8 +20,7 @@ import { setButtonLoading, showStatus, debounce, hideStatus } from "./ui-helpers
 
 let selectedParentId = null;
 
-function getBodyField(type) {
-  if (type === "Issue") return "Microsoft.VSTS.TCM.ReproSteps";
+function getBodyField() {
   return "System.Description";
 }
 
@@ -168,12 +167,15 @@ async function handleCreate() {
       const header = `<p>Begin display of original email</p><hr>
         <p>From: ${info.from.displayName}<br>Email: ${info.from.emailAddress}</p>`;
       emailBody = header + body;
+      console.log("[DevOps] Email body fetched, length:", emailBody.length);
     } catch (err) {
-      console.error("Failed to load email body:", err);
+      console.error("[DevOps] Failed to load email body:", err);
       showStatus("Warning: could not load email body.", "info");
     }
 
     const bodyField = getBodyField(ticketType);
+    console.log("[DevOps] Using body field:", bodyField, "for type:", ticketType);
+    console.log("[DevOps] emailBody empty?", emailBody.length === 0);
 
     // Look up creator in Graph users
     const users = await getGraphUsers();
@@ -216,7 +218,9 @@ async function handleCreate() {
     });
 
     // Create the work item
+    console.log("[DevOps] Creating work item with patchOps:", JSON.stringify(patchOps.map(op => ({ op: op.op, path: op.path, valueLength: typeof op.value === 'string' ? op.value.length : 'object' }))));
     const ticket = await createWorkItem(ticketType, patchOps);
+    console.log("[DevOps] Work item created:", ticket.id, "fields:", Object.keys(ticket.fields || {}).filter(f => f.includes("Repro") || f.includes("Description")));
 
     // Check if attachment content API is available (requires Mailbox 1.8)
     const allAttachments = info.attachments || [];
